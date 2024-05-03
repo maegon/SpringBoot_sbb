@@ -8,5 +8,7 @@ spring:
     password:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+#    create는 새로운 데이터를 입력받아 db에 잠깐 저장해주지만 다시 실행했을땐 작성된 데이터가 저장되지 않음
+#    update는 새로운 데이터를 입력 받아 dbdp 저장하고 다시 실행했을때 역시 작성된 데이터가 저장됨
     show-slq: true
