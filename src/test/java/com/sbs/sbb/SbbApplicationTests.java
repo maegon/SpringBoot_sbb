@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,6 +19,8 @@ class SbbApplicationTests {
 
 	@Autowired
 	private QuestionRepository questionRepository;
+	@Autowired
+	private AnswerRepository answerRepository;
 
 	@Test
 	void testJpa() {
@@ -64,13 +67,24 @@ class SbbApplicationTests {
 //		this.questionRepository.save(q);
 
 		// 데이터 삭제
-		assertEquals(2, this.questionRepository.count()); // 개수 셈(총 2개)
-		Optional<Question> oq = this.questionRepository.findById(1); // 1번 항목 삭제(sql에선 2번째꺼)
+//		assertEquals(2, this.questionRepository.count()); // 개수 셈(총 2개)
+//		Optional<Question> oq = this.questionRepository.findById(1); // 1번 항목 삭제(sql에선 2번째꺼)
+//		assertTrue(oq.isPresent());
+//		Question q = oq.get();
+//		this.questionRepository.delete(q); // 해당 번호의 정보 삭제
+//		assertEquals(1, this.questionRepository.count()); // 삭제하고 남은 용량의 크기 셈 (총 1개)
+
+		// 답변 데이터 저장 
+		Optional<Question> oq = this.questionRepository.findById(2);
 		assertTrue(oq.isPresent());
 		Question q = oq.get();
-		this.questionRepository.delete(q); // 해당 번호의 정보 삭제
-		assertEquals(1, this.questionRepository.count()); // 삭제하고 남은 용량의 크기 셈 (총 1개)
 
+		Answer a = new Answer();
+		a.setContent("네 자동으로 생성됩니다.");
+		a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+		a.setCreateDate(LocalDateTime.now());
+		this.answerRepository.save(a);
+		
 	}
 
 }
