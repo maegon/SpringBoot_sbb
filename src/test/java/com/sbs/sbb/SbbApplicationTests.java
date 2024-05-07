@@ -7,13 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@Transactional
 //@Rollback(true)
 class SbbApplicationTests {
 
@@ -22,6 +22,7 @@ class SbbApplicationTests {
 	@Autowired
 	private AnswerRepository answerRepository;
 
+	@Transactional
 	@Test
 	void testJpa() {
 //		Question q1 = new Question();
@@ -75,16 +76,31 @@ class SbbApplicationTests {
 //		assertEquals(1, this.questionRepository.count()); // 삭제하고 남은 용량의 크기 셈 (총 1개)
 
 		// 답변 데이터 저장 
+//		Optional<Question> oq = this.questionRepository.findById(2);
+//		assertTrue(oq.isPresent());
+//		Question q = oq.get();
+//
+//		Answer a = new Answer();
+//		a.setContent("네 자동으로 생성됩니다.");
+//		a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+//		a.setCreateDate(LocalDateTime.now());
+//		this.answerRepository.save(a);
+
+		// 답변 데이터 조회(답변 데이터를 꺼내서 질문 데이터 찾기)
+//		Optional<Answer> oa = this.answerRepository.findById(1);
+//		assertTrue(oa.isPresent());
+//		Answer a = oa.get();
+//		assertEquals(2, a.getQuestion().getId());
+
+		// 질문 데이터를 꺼내서 답변 데이터 찾기
 		Optional<Question> oq = this.questionRepository.findById(2);
 		assertTrue(oq.isPresent());
 		Question q = oq.get();
 
-		Answer a = new Answer();
-		a.setContent("네 자동으로 생성됩니다.");
-		a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
-		a.setCreateDate(LocalDateTime.now());
-		this.answerRepository.save(a);
-		
+		List<Answer> answerList = q.getAnswerList();
+
+		assertEquals(1, answerList.size());
+		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
 	}
 
 }
