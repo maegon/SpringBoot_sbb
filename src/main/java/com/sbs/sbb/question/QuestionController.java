@@ -23,7 +23,10 @@ public class QuestionController {
     // id값을 받아 @PathVariable을 통해 id를 detail함수 안에서도 쓸수 있게 설정
     @GetMapping("/question/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
-        model.addAttribute("id", id);
+        Question q = this.questionService.getQuestion(id);
+
+        model.addAttribute("question", q);
+
         return "question_detail";
     }
 }
