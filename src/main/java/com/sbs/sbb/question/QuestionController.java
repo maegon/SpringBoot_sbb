@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class QuestionController {
     @GetMapping("/question/list")
     public String list() {
-        return "question list";
+        return "question_list";
     }
 }
