@@ -1,4 +1,4 @@
-<h1 style="color: red;">[[${questionList}]]</h1>
+<!--<h1 style="color: red;">[[${questionList}]]</h1>-->
 
 <table border="1">
     <thead>
@@ -12,8 +12,8 @@
     <tbody>
 <!--  html에서의 for문 (q : ${questionList}) -->
     <tr th:each="q : ${questionList}">
-        <td th:text="${q.id}"></td>
-        <td th:text="${q.subject}"></td>
+        <td><a th:text="${q.id}" th:href="@{|/question/detail${q.id}|}"></a></td>
+        <td><a th:text="${q.subject}" th:href="@{|/question/detail${q.id}|}"></a></td>
         <td th:text="${q.createDate}"></td>
     </tr>
     </tbody>
