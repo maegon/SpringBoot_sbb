@@ -10,11 +10,14 @@
     </thead>
 
     <tbody>
-<!--  html에서의 for문 (q : ${questionList}) -->
-    <tr th:each="q : ${questionList}">
-        <td><a th:text="${q.id}" th:href="@{|/question/detail${q.id}|}"></a></td>
-        <td><a th:text="${q.subject}" th:href="@{|/question/detail${q.id}|}"></a></td>
-        <td th:text="${q.createDate}"></td>
+    <tr th:each="question : ${questionList}">
+        <td>
+            <a th:text="${question.id}" th:href="@{|/question/detail/${question.id}|}"></a>
+        </td>
+        <td>
+            <a th:text="${question.subject}" th:href="@{|/question/detail/${question.id}|}"></a>
+        </td>
+        <td th:text="${question.createDate}"></td>
     </tr>
     </tbody>
 </table>
