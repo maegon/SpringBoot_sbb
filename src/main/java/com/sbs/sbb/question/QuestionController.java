@@ -1,5 +1,6 @@
 package com.sbs.sbb.question;
 
+import com.sbs.sbb.answer.AnswerForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,7 @@ public class QuestionController {
 
     // id값을 받아 @PathVariable을 통해 id를 detail함수 안에서도 쓸수 있게 설정
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id) {
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
         Question q = this.questionService.getQuestion(id);
 
         model.addAttribute("question", q);
