@@ -9,7 +9,7 @@ public class MainController {
     @GetMapping("/sbb")
     @ResponseBody
     public String index() {
-        return "안녕하세요!!!";
+        return "list";
     }
 
 
