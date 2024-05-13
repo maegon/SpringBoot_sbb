@@ -25,7 +25,8 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                         .anyRequest().authenticated()
-                        // "/"(3번째줄) 가 아닌 녀석들이 들어오면 인증이 되어야지 들어올 수 있도록 설정
+                        // 위에 적혀있는 "/~" 가 아닌 다른 녀석들이 들어오면 로그인이 되어야 들어올 수 있도록 설정
+                        // .anyRequest().authenticated()를 안써주면 자체적으로 접근 불가 
                 )
                 .formLogin((formLogin) -> formLogin
                         // GET
