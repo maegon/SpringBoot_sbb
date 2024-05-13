@@ -18,11 +18,21 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+                        .requestMatchers(new AntPathRequestMatcher("/question/list")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                        .anyRequest().authenticated()
+                        // "/"(3번째줄) 가 아닌 녀석들이 들어오면 인증이 되어야지 들어올 수 있도록 설정
+                )
                 .formLogin((formLogin) -> formLogin
-                        .loginPage("/user/login")
+                        // GET
                         // 해당 url까지 오면 알아서 login까지 해결(?)해줌
                         // 아무튼 붙히면 좋다
+                        // 시큐리티에게 우리가 만든 로그인 페이지 url을 알려줌
+                        // 만약 이걸 하지 않으면 로그인 페이지 url은 "/login" 이다.
+                        .loginPage("/user/login")
+                        // POST
+                        // 시큐리티에게 로그인 폼 처리 url을 알려줌
                         .loginProcessingUrl("/user/login")
                         .defaultSuccessUrl("/"))
         ;
