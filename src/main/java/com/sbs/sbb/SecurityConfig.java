@@ -19,7 +19,10 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/question/list")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/question/detail/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/user/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/signup")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                         .anyRequest().authenticated()
                         // "/"(3번째줄) 가 아닌 녀석들이 들어오면 인증이 되어야지 들어올 수 있도록 설정
