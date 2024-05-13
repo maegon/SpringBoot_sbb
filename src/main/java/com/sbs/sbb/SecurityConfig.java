@@ -19,12 +19,18 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/user/login")
+                        // 해당 url까지 오면 알아서 login까지 해결(?)해줌
+                        // 아무튼 붙히면 좋다
+                        .loginProcessingUrl("/user/login")
+                        .defaultSuccessUrl("/"))
         ;
         return http.build();
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
