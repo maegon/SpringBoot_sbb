@@ -33,7 +33,6 @@ class SbbApplicationTests {
 	private QuestionRepository questionRepository;
 	@Autowired
 	private AnswerRepository answerRepository;
-
 	@Autowired
 	private UserRepository userRepository;
 
@@ -47,7 +46,6 @@ class SbbApplicationTests {
 		// 모든 데이터 삭제
 		questionRepository.deleteAll();
 		questionRepository.clearAutoIncrement();
-
 
 		// 모든 데이터 삭제
 		// 흔적 삭제 -> 다음번 INSERT를 할 때 id가 1번으로 설정되도록
@@ -77,7 +75,6 @@ class SbbApplicationTests {
 		a1.setQuestion(q2);
 		a1.setCreateDate(LocalDateTime.now());
 		answerRepository.save(a1);  // 첫번째 답변 저장
-
 	}
 
 	@Test
