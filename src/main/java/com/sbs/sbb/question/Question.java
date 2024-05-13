@@ -11,7 +11,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@SuppressWarnings("ALL")
 @Getter
 @Setter
 @Entity // question 테이블

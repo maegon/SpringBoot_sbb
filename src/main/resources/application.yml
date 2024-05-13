@@ -9,15 +9,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  properties:
-    hibernate:
-      show-sql: true
-      format-sql: true
-      default_batch_fetch_size: 1000
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 1000
+
 logging:
   level:
     org.hibernate.orm.jdbc.bind: TRACE
     org.hibernate.orm.jdbc.extract: TRACE
-#    create는 새로운 데이터를 입력받아 db에 잠깐 저장해주지만 다시 실행했을땐 작성된 데이터가 저장되지 않음
-#    update는 새로운 데이터를 입력 받아 db에 저장하고 다시 실행했을때 역시 작성된 데이터가 저장됨
-
