@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,5 +33,7 @@ public class Question {
 //  CascadeType.REMOVE 를 하면 question을 삭제할 때 답변도 같이 삭제한다는 뜻
 //  OneToMany는 테이블의 컬럼으로 생성되지 않음, 선택 작성
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    // answerList.size(); 함수가 실행될 때 SELECT COUNT가 실행됨
     private List<Answer> answerList;
 }
