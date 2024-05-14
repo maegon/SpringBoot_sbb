@@ -20,6 +20,7 @@ public class Answer {
     private String content;
 
     private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
 
 //  나중에 게시판 번호 같은거 만들었을때 게시판번호를 지정해주지 않으면 null값이 들어갈 수 있기 때문에
 //  private Integer questionId;
@@ -29,4 +30,5 @@ public class Answer {
 
     @ManyToOne
     private SiteUser author;
+
 }
