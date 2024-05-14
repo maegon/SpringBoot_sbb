@@ -1,6 +1,8 @@
 package com.sbs.sbb.question;
 
 import com.sbs.sbb.answer.AnswerForm;
+import com.sbs.sbb.user.SiteUser;
+import com.sbs.sbb.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,23 +11,26 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
+@RequestMapping("/question")
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/question")
-// @Validated 컨트롤러에서는 생략가능, 다른데선 Validation 라이브러리 사용시 써줘야함
+//@Validated 컨트롤러에서는 이 부분 생략가능
 public class QuestionController {
     private final QuestionService questionService;
+    private final UserService userService;
+
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
         Page<Question> paging = this.questionService.getList(page);
         model.addAttribute("paging", paging);
+
         return "question_list";
     }
 
-
-    // id값을 받아 @PathVariable을 통해 id를 detail함수 안에서도 쓸수 있게 설정
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerFrom) {
         Question q = this.questionService.getQuestion(id);
 
         model.addAttribute("question", q);
@@ -34,25 +39,32 @@ public class QuestionController {
     }
 
     @GetMapping("/create")
-    // QuestionForm 변수는 model.addAttribute 없이 바로 뷰에서 접근할 수 있다.
-    // QuestionForm questionForm 변수를 써주는 이유 : question_form.html에서 questionForm 변수가 없으면 실행이 안되기 때문에
+    // QuestionFrom 변수는 model.addAttribute 없이 바로 뷰에서 접근할 수 있다.
+    // QuestionFrom questionForm 써주는 이유 : question_form.html에서  questionForm 변수가 없으면 실행이 안되기 때문에
     // 빈 객체라도 만든다.
-    public String create(QuestionForm questionForm) {
+    // public String create(Model modle) {
+    public String create(QuestionForm questionFrom) {
+//        model.addAttribute("questionFrom", new QuestionForm());
+
         return "question_form";
     }
 
     @PostMapping("/create")
-    // validation 라이브러리 사용시 해당 함수에 @Valid 꼭 붙여줘야 유효성 검사를 함
-    // QuestionForm 값을 바인딩 할 때 유효성 체크를 해라!!
+    // QuestionForm 값을 바인딩 할 때 유효성 체크를 해라!
+    // QuestionFrom 변수는 model.addAttribute 없이 바로 뷰에서 접근할 수 있다.
+    public String questionCreate(
+            @Valid QuestionForm questionForm,
+            BindingResult bindingResult,
+            Principal principal) {
 
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if ( bindingResult.hasErrors() ) {
             // question_form.html 실행
-            // 다시 작성하라는 의미로 응답에 폼을 실어서 보냄
+            // 다시 작성하라는 의미로 응답에 폼을 싫어서 보냄
             return "question_form";
         }
 
-        Question q = this.questionService.create(questionForm.getSubject(), questionForm.getContent());
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        Question q = this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
 
         return "redirect:/question/list";
     }
