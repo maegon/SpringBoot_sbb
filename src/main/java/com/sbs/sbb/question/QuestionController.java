@@ -41,6 +41,7 @@ public class QuestionController {
         return "question_detail";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     // QuestionFrom 변수는 model.addAttribute 없이 바로 뷰에서 접근할 수 있다.
     // QuestionFrom questionForm 써주는 이유 : question_form.html에서  questionForm 변수가 없으면 실행이 안되기 때문에
@@ -52,6 +53,7 @@ public class QuestionController {
         return "question_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     // QuestionForm 값을 바인딩 할 때 유효성 체크를 해라!
     // QuestionFrom 변수는 model.addAttribute 없이 바로 뷰에서 접근할 수 있다.
@@ -79,10 +81,13 @@ public class QuestionController {
         if (bindingResult.hasErrors()) {
             return "question_form";
         }
-        Question question = this.questionService.getQuestion(id);
+
+        Question question = questionService.getQuestion(id);
+
         if (!question.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
+
         questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
         return String.format("redirect:/question/detail/%s", id);
     }
@@ -90,10 +95,12 @@ public class QuestionController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal) {
-        Question question = this.questionService.getQuestion(id);
+        Question question = questionService.getQuestion(id);
+
         if(!question.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
+
         questionForm.setSubject(question.getSubject());
         questionForm.setContent(question.getContent());
         return "question_form";
@@ -103,11 +110,13 @@ public class QuestionController {
     @GetMapping("/delete/{id}")
     public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
         Question question = this.questionService.getQuestion(id);
+
         if (!question.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
+
         questionService.delete(question);
+
         return "redirect:/";
     }
-
 }
