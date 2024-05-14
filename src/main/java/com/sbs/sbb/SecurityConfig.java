@@ -38,7 +38,12 @@ public class SecurityConfig {
                         // POST
                         // 시큐리티에게 로그인 폼 처리 url을 알려줌
                         .loginProcessingUrl("/user/login")
-                        .defaultSuccessUrl("/"))
+                        .defaultSuccessUrl("/")
+                )
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true))
         ;
         return http.build();
     }
