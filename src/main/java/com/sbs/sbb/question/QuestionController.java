@@ -74,6 +74,7 @@ public class QuestionController {
         return "redirect:/question/list";
     }
 
+    // 수정
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String questionModify(@Valid QuestionForm questionForm, BindingResult bindingResult,
@@ -106,6 +107,7 @@ public class QuestionController {
         return "question_form";
     }
 
+    // 삭제
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
@@ -118,5 +120,17 @@ public class QuestionController {
         questionService.delete(question);
 
         return "redirect:/";
+    }
+
+    // 추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String questionVote(Principal principal, @PathVariable("id") Integer id) {
+        Question question = this.questionService.getQuestion(id);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        
+        this.questionService.vote(question, siteUser);
+
+        return String.format("redirect:/question/detail/%s", id);
     }
 }

@@ -34,6 +34,7 @@ public class QuestionService {
         return oq.get();
     }
 
+    // 생성
     public Question create(String subject, String content, SiteUser user) {
         Question q = new Question();
         q.setSubject(subject);
@@ -53,6 +54,7 @@ public class QuestionService {
         return this.questionRepository.findAll(pageable);
     }
 
+    // 수정
     public void modify(Question question, String subject, String content) {
         question.setSubject(subject);
         question.setContent(content);
@@ -60,7 +62,15 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
+    // 삭제
     public void delete(Question question) {
         questionRepository.delete(question);
+    }
+
+    // 추천
+    public void vote(Question question, SiteUser voter) {
+        question.addVoter(voter);
+
+        this.questionRepository.save(question);
     }
 }
