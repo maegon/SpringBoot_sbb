@@ -44,4 +44,9 @@ public class AnswerService {
         return answer;
     }
 
+    public void vote(Answer answer, SiteUser voter) {
+        answer.addVoter(voter);
+
+        this.answerRepository.save(answer);
+    }
 }

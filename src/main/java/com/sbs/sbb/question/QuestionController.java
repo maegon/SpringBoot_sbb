@@ -131,6 +131,9 @@ public class QuestionController {
         
         this.questionService.vote(question, siteUser);
 
-        return String.format("redirect:/question/detail/%s", id);
+        // 밑에 꺼처럼 return해도 됨
+        // 코드를 줄이기 위한 return 사용
+        // return String.format("redirect:/question/detail/%s", id);
+        return "redirect:/question/detail/%s".formatted(id);
     }
 }
