@@ -68,16 +68,19 @@ class SbbApplicationTests {
 		// 답변 1개 생성
 		Answer a1 = answerService.create(q2, "네 자동으로 생성됩니다.", user2);
 
-		// 1번 질문에 user1, user2가 추천
+		// 1번 질문에 2명의 회원이 추천을 한다.
+		// user1 (이)가 q1 (을)를 추천했다.
 		q1.addVoter(user1);
 		q1.addVoter(user2);
 		questionRepository.save(q1);
 
-		// 2번 질문에 user1이 추천
+		// 2번 질문에 2명의 회원이 추천을 한다.
 		q2.addVoter(user1);
-		questionRepository.save(q1);
+		q2.addVoter(user2);
+		questionRepository.save(q2);
 
-		// 1번 답변에 user2가 추천
+		// 1번 답변에 2명의 회원이 추천을 한다.
+		a1.addVoter(user1);
 		a1.addVoter(user2);
 		answerRepository.save(a1);
 	}
