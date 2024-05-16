@@ -35,6 +35,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	// 마크 다운
+	implementation 'org.commonmark:commonmark:0.22.0'
 }
 
 tasks.named('test') {
